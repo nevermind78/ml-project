@@ -48,38 +48,19 @@ jobs:
 
       - name: Train and save models
         run: |
-          python train_models.py
+          python train.py
 
-      - name: Commit and push models
+      - name: Create models directory
+        run: |
+          mkdir -p models
+
+      - name: Add models to Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add models/logistic_regression.pkl models/linear_svc.pkl models/knn.pkl
+          git add models/knn.pkl models/linear_svc.pkl models/logistic_regression.pkl
           git commit -m "Update models via GitHub Actions"
           git push
-
-  deploy-api:
-    needs: train-models
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.9'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r api/requirements.txt
-
-      - name: Deploy to Render
-        uses: render-actions/deploy@v1
-        with:
-          render-token: ${{ secrets.RENDER_TOKEN }}
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
 
   deploy-streamlit:
     needs: train-models
@@ -101,4 +82,4 @@ jobs:
       - name: Deploy Streamlit app
         run: |
           pip install streamlit
-          streamlit deploy app/app.py --token ${{ secrets.STREAMLIT_TOKEN }}
+          streamlit deploy app/app.py
