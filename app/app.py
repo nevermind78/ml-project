@@ -20,7 +20,7 @@ fmnist_classes = [
 ]
 
 # URL de l'API Flask (remplacez par l'URL de votre API si nécessaire)
-API_URL = "http://127.0.0.1:5000/predict"
+API_URL = "https://ml-project-api.onrender.com/predict"
 
 # Téléchargement de l'image
 uploaded_file = st.file_uploader("Téléchargez une image (28x28 pixels)", type=["png", "jpg", "jpeg"])
