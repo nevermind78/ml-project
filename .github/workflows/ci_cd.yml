@@ -48,7 +48,7 @@ jobs:
 
       - name: Train and save models
         run: |
-          python train.py
+          python train_models.py
 
       - name: Commit and push models
         run: |
