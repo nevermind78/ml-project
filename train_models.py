@@ -24,8 +24,8 @@ for clf in classifiers:
     clf.fit(X_train, y_train)
 
 # Sauvegarder les modèles
-joblib.dump(classifiers[0], 'logistic_regression.pkl')
-joblib.dump(classifiers[1], 'linear_svc.pkl')
-joblib.dump(classifiers[2], 'knn.pkl')
+joblib.dump(classifiers[0], 'models/logistic_regression.pkl')
+joblib.dump(classifiers[1], 'models/linear_svc.pkl')
+joblib.dump(classifiers[2], 'models/knn.pkl')
 
 print("Les modèles ont été entraînés et sauvegardés.")
