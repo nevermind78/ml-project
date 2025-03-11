@@ -14,9 +14,9 @@ def download_model(model_url, model_name):
         f.write(response.content)
 
 # Télécharger les modèles depuis GitHub
-download_model('https://github.com/nevermind78/API_RENDER/raw/refs/heads/main/logistic_regression.pkl', 'logistic_regression.pkl')
-download_model('https://github.com/nevermind78/API_RENDER/raw/refs/heads/main/linear_svc.pkl', 'linear_svc.pkl')
-download_model('https://github.com/nevermind78/API_RENDER/raw/refs/heads/main/knn.pkl', 'knn.pkl')
+download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/logistic_regression.pkl', 'logistic_regression.pkl')
+download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/linear_svc.pkl', 'linear_svc.pkl')
+download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/knn.pkl', 'knn.pkl')
 
 # Charger les modèles
 logistic_regression = joblib.load('logistic_regression.pkl')
