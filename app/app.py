@@ -6,7 +6,7 @@ import requests
 st.title("Classification d'images avec Fashion MNIST")
 # Intégration de l'iframe
 st.components.v1.iframe(
-    "https://nevermind78.github.io/datailabproject/notebooks/index.html?path=MYSQL_PYTHON_DB4FREENET.ipynb.ipynb", 
+    "https://nevermind78.github.io/datailabproject/notebooks/index.html?path=MYSQL_PYTHON_DB4FREENET.ipynb", 
     width=900, 
     height=600, 
     scrolling=True
