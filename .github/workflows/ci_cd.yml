@@ -1,17 +1,16 @@
 name: CI/CD Pipeline
+
 on:
   push:
     branches:
       - main
     paths:
-      - 'train.py'
-      - 'models/**'
+      - 'train_models.py'  # Déclenche uniquement si ce fichier change
   pull_request:
     branches:
       - main
     paths:
-      - 'train.py'
-      - 'models/**'
+      - 'train_models.py'  # Déclenche uniquement si ce fichier change
 
 jobs:
   train-models:
@@ -36,7 +35,7 @@ jobs:
 
       - name: Train and save models
         run: |
-          python train.py
+          python train_models.py  # Exécute le fichier d'entraînement
 
       - name: Add models to Git
         run: |
@@ -44,9 +43,8 @@ jobs:
           git config --global user.email "actions@github.com"
           git pull --rebase origin main  # Récupérer les changements récents
           git add models/logistic_regression.pkl models/linear_svc.pkl models/knn.pkl
-          git commit -m "Update models via GitHub Actions"
+          git commit -m "Update models via GitHub Actions" || echo "No changes to commit"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
-
 
   deploy-api:
     needs: train-models
