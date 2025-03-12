@@ -9,7 +9,7 @@ This project implements a machine learning pipeline with a **Flask API** deploye
 ## 🚀 Deployed Applications
 
 - **API on Render**: [https://ml-project-api.onrender.com](https://ml-project-api.onrender.com)
-- **Streamlit App**: [https://ml-project25.streamlit.app/](https://ml-project25.streamlit.app/)
+- **Streamlit App**: [https://ml-project25.streamlit.app](https://ml-project25.streamlit.app)
 
 ---
 
