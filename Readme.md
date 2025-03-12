@@ -147,7 +147,7 @@ jobs:
 
       - name: Train and save models
         run: |
-          python train.py
+          python train_models.py
 
       - name: Add models to Git
         run: |
@@ -174,11 +174,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r api/requirements.txt
 
-      - name: Deploy to Render
-        uses: render-actions/deploy@v1
-        with:
-          render-token: ${{ secrets.RENDER_TOKEN }}
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+      - name: Deploy to Render using API
+        run: |
+          pip install requests
+          SERVICE_ID="${{ secrets.RENDER_SERVICE_ID }}"
+          API_TOKEN="${{ secrets.RENDER_TOKEN }}"
+          curl -s -X POST \
+            -H "Authorization: Bearer $API_TOKEN" \
+            -H "Accept: application/json" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "clearCache": "do_not_clear"
+                }' \
+            "https://api.render.com/v1/services/$SERVICE_ID/deploys"
 ```
 
 ---
