@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - main
-  paths:
+    paths:
       - 'train.py'
       - 'models/**'
   pull_request:
     branches:
       - main
-  paths:
+    paths:
       - 'train.py'
       - 'models/**'
 
