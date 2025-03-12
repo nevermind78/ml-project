@@ -3,7 +3,7 @@ from PIL import Image
 import requests
 
 # Titre de l'application
-st.title("Classification Fashion MNIST")
+st.title("Modèle de Classification Fashion MNIST")
 
 # Classes Fashion MNIST
 fmnist_classes = [
