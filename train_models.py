@@ -17,7 +17,7 @@ X = X / 255.0  # Normalisation
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, train_size=0.1)
 
 # Définir les modèles
-classifiers = [LogisticRegression(max_iter=1500), LinearSVC(max_iter=1500, dual=False,tol=1e-4), KNeighborsClassifier()]
+classifiers = [LogisticRegression(max_iter=1000), LinearSVC(max_iter=1000, dual=False,tol=1e-4), KNeighborsClassifier()]
 
 # Entraîner les modèles
 for clf in classifiers:
