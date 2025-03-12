@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - main
+  paths:
+      - 'train.py'
+      - 'models/**'
   pull_request:
     branches:
       - main
+  paths:
+      - 'train.py'
+      - 'models/**'
 
 jobs:
   train-models:
