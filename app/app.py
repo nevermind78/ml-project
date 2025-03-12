@@ -4,7 +4,13 @@ import requests
 
 # Titre de l'application
 st.title("Classification d'images avec Fashion MNIST")
-
+# Intégration de l'iframe
+st.components.v1.iframe(
+    "https://nevermind78.github.io/datailabproject/notebooks/index.html?path=commencer_avec_pandas.ipynb", 
+    width=900, 
+    height=600, 
+    scrolling=True
+)
 # Classes Fashion MNIST
 fmnist_classes = [
     "T-shirt/top",  # Classe 0
