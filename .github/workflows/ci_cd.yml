@@ -37,7 +37,7 @@ jobs:
 
       - name: Train and save models
         run: |
-          python train_models.py
+          python train.py
 
       - name: Add models to Git
         run: |
