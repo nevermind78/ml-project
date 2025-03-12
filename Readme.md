@@ -1,21 +1,23 @@
 # ML Project - Spring 2025
 
-## Overview
+## 📝 Overview
 
-This project implements a machine learning pipeline with a Flask API deployed on Render and a Streamlit app for user interaction.
+This project implements a machine learning pipeline with a **Flask API** deployed on **Render** and a **Streamlit app** for user interaction. The project is fully automated using GitHub Actions.
 
-## Links
+---
 
-- **Streamlit App**: [https://your-streamlit-app-url.streamlit.app](https://your-streamlit-app-url.streamlit.app)
-- **Render API**: [https://your-api-url.onrender.com](https://your-api-url.onrender.com)
+## 🚀 Deployed Applications
 
-## Project Structure
+- **API on Render**: [https://your-api-url.onrender.com](https://your-api-url.onrender.com)
+- **Streamlit App**: [https://share.streamlit.io/your-username/your-repo/app/app.py](https://share.streamlit.io/your-username/your-repo/app/app.py)
 
+---
+## 🗂 Project Structure
 ```
 your-repo/
 ├── .github/
 │ └── workflows/
-│ └── ci_cd.yml # GitHub Actions workflow file
+│ └── ci_cd.yml # GitHub Actions workflow
 ├── api/ # API-related files
 │ ├── api.py # Flask API code
 │ ├── requirements.txt # API dependencies
@@ -29,39 +31,193 @@ your-repo/
 ├── train.py # Training script
 ├── requirements.txt # Local environment dependencies
 ├── README.md # Project documentation
-└── .gitignore # Files to ignore in Git
-```
+└── .gitignore # Files ignored by Git
 
-## Setup Instructions
+```
+---
+
+## 🛠 Setup and Installation
+
+### Prerequisites
+
+- Python 3.9
+- Git
+- Accounts on [GitHub](https://github.com), [Render](https://render.com), and [Streamlit Sharing](https://share.streamlit.io)
+
+### Local Installation
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/your-repo.git
+   cd your-repo
+    ```
+
+2. Create a virtual environment:
+ 
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+3. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Train the models:
+ 
+   ```bash
+   python train.py
+   ```
+5. Run the API locally:
+   ```bash
+   cd api
+   python api.py
+   ```
+6. Run the Streamlit app locally:
+
+   ```
+   streamlit run app/app.py
    ```
 
+---
 
-1. * 2. Install dependencies:
+## 🚀 Deployment
 
-        ```
-        pip install -r requirements.txt
-        ```
-     3. Train the models:
+### 1. Deploy the API on Render
 
-        ```
-        python train.py
-        ```
-     4. Run the API locally:
+1. Go to [Render](https://render.com/) and create a new  **Web Service** .
+2. Connect your GitHub repository.
+3. Configure the service:
+   * **Build Command** : `pip install -r requirements.txt`
+   * **Start Command** : `python api.py`
+4. Deploy the service.
 
-        ```
-        cd api
-        python api.py
-        ```
-     5. Run the Streamlit app locally:
+### 2. Deploy the Streamlit App on Streamlit Sharing
 
-        ```
-        streamlit run app/app.py
-        ```
+1. Go to [Streamlit Sharing](https://share.streamlit.io/).
+2. Connect your GitHub repository.
+3. Specify the path to your Streamlit file (`app/app.py`).
+4. Deploy the app.
 
-     ## CI/CD Pipeline
+---
 
-     The project uses GitHub Actions to automate training, linting, and deployment. See `.github/workflows/ci_cd.yml` for details.
+## 🤖 GitHub Actions Workflow
+
+The GitHub Actions workflow automates the following steps:
+
+1. **Train Models** : Runs `train.py` to generate `.pkl` files.
+2. **Deploy API** : Deploys the API to Render.
+3. **Add Models to Repository** : Adds the `.pkl` files to the Git repository.
+
+### `.github/workflows/ci_cd.yml`
+
+
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  train-models:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create models directory
+        run: |
+          mkdir -p models
+
+      - name: Train and save models
+        run: |
+          python train.py
+
+      - name: Add models to Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add models/logistic_regression.pkl models/linear_svc.pkl models/knn.pkl
+          git commit -m "Update models via GitHub Actions"
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
+
+  deploy-api:
+    needs: train-models
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r api/requirements.txt
+
+      - name: Deploy to Render
+        uses: render-actions/deploy@v1
+        with:
+          render-token: ${{ secrets.RENDER_TOKEN }}
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+```
+
+---
+
+## 📄 Additional Documentation
+
+### Key Files
+
+* **`train.py`** : Script to train and save models.
+* **`api/api.py`** : Flask API code.
+* **`app/app.py`** : Streamlit app code.
+* **`requirements.txt`** : Dependencies for the local environment.
+* **`api/requirements.txt`** : Dependencies for the API.
+
+---
+
+## 🙏 Acknowledgments
+
+* **Render** for hosting the API.
+* **Streamlit Sharing** for hosting the Streamlit app.
+* **GitHub Actions** for automating the CI/CD pipeline.
+
+---
+
+## 📧 Contact
+
+For questions or feedback, contact me at [your-email@example.com](https://mailto:your-email@example.com/).
+
+
+
+---
+
+### **How to Use This File**
+
+1. Copy this content into a file named `README.md` in the root of your repository.
+2. Replace placeholders (e.g., `your-username`, `your-repo`, `your-api-url.onrender.com`) with the appropriate values.
+3. Push the file to your GitHub repository:
+   ```bash
+   git add README.md
+   git commit -m "Add final project documentation"
+   git push origin main
+```

@@ -7,21 +7,28 @@ import io
 
 app = Flask(__name__)
 
-# Fonction pour télécharger le modèle depuis GitHub
-def download_model(model_url, model_name):
-    response = requests.get(model_url)
-    with open(model_name, 'wb') as f:
-        f.write(response.content)
+# Load models once at startup
+def load_models():
+    # Download models from GitHub (only once)
+    def download_model(model_url, model_name):
+        response = requests.get(model_url)
+        with open(model_name, 'wb') as f:
+            f.write(response.content)
 
-# Télécharger les modèles depuis GitHub
-download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/logistic_regression.pkl', 'logistic_regression.pkl')
-download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/linear_svc.pkl', 'linear_svc.pkl')
-download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/knn.pkl', 'knn.pkl')
+    # Download and load models
+    download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/logistic_regression.pkl', 'logistic_regression.pkl')
+    download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/linear_svc.pkl', 'linear_svc.pkl')
+    download_model('https://github.com/nevermind78/ml-project/raw/refs/heads/main/models/knn.pkl', 'knn.pkl')
 
-# Charger les modèles
-logistic_regression = joblib.load('logistic_regression.pkl')
-linear_svc = joblib.load('linear_svc.pkl')
-knn = joblib.load('knn.pkl')
+    # Load models into memory
+    logistic_regression = joblib.load('logistic_regression.pkl')
+    linear_svc = joblib.load('linear_svc.pkl')
+    knn = joblib.load('knn.pkl')
+
+    return logistic_regression, linear_svc, knn
+
+# Load models when the API starts
+logistic_regression, linear_svc, knn = load_models()
 
 @app.route('/predict', methods=['POST'])
 def predict():
