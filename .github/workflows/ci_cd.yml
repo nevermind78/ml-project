@@ -14,20 +14,6 @@ on:
       - 'train_models.py'  # Déclenche uniquement si ce fichier change
       - '.github/workflows/ci_cd.yml'  # Déclenche uniquement si ce fichier change
 
-name: CI/CD Pipeline
-
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'train_models.py'  # Déclenche uniquement si ce fichier change
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'train_models.py'  # Déclenche uniquement si ce fichier change
-
 jobs:
   train-models:
     runs-on: ubuntu-latest
