@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'train.py'
+      - 'models/**'
   pull_request:
     branches:
       - main
+    paths:
+      - 'train.py'
+      - 'models/**'
 
 jobs:
   train-models:
@@ -31,7 +37,7 @@ jobs:
 
       - name: Train and save models
         run: |
-          python train_models.py
+          python train.py
 
       - name: Add models to Git
         run: |
@@ -42,32 +48,32 @@ jobs:
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
 
   deploy-api:
-  needs: train-models
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    needs: train-models
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.9'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r api/requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r api/requirements.txt
 
-    - name: Deploy to Render using API
-      run: |
-        pip install requests
-        SERVICE_ID="${{ secrets.RENDER_SERVICE_ID }}"
-        API_TOKEN="${{ secrets.RENDER_TOKEN }}"
-        curl -s -X POST \
-          -H "Authorization: Bearer $API_TOKEN" \
-          -H "Accept: application/json" \
-          -H "Content-Type: application/json" \
-          -d '{
-                "clearCache": "do_not_clear"
-              }' \
-          "https://api.render.com/v1/services/$SERVICE_ID/deploys"
+      - name: Deploy to Render using API
+        run: |
+          pip install requests
+          SERVICE_ID="${{ secrets.RENDER_SERVICE_ID }}"
+          API_TOKEN="${{ secrets.RENDER_TOKEN }}"
+          curl -s -X POST \
+            -H "Authorization: Bearer $API_TOKEN" \
+            -H "Accept: application/json" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "clearCache": "do_not_clear"
+                }' \
+            "https://api.render.com/v1/services/$SERVICE_ID/deploys"
